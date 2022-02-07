@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+/*상품 저장소*/
+
 @Repository
 public class ItemRepository {
-    private static final Map<Long, Item> store=new HashMap<>();  //static 사용
-    private static  long sequence=0L;    //static 사용
+    private static final Map<Long, Item> store=new HashMap<>();  
+    private static  long sequence=0L;   
 
     public Item save(Item item){
         item.setId(++sequence);

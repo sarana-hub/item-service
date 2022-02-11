@@ -20,6 +20,7 @@ public class BasicItemController {
 
     private final ItemRepository itemRepository;
 
+    /* 상품 목록 - 타임리프 */
     @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();    //모든 item 조회
@@ -27,6 +28,7 @@ public class BasicItemController {
         return "basic/items";   //뷰 템플릿 호출
     }
 
+    /* 상품 상세 */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable 로 넘어온 itemId로 item 조회
@@ -34,14 +36,17 @@ public class BasicItemController {
         return "basic/item";
     }
 
-
+    /* 상품 등록 폼 */
     @GetMapping("/add")
-    public String addForm() {
+    public String addForm() {   //단순히 뷰 템플릿만 호출
+
         return "basic/addForm";
     }
 
 
-
+    /* 상품 등록 처리 - @RequestParam
+    * 요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용
+    */
     //@PostMapping("/add")
     public String addItemV1(@RequestParam String itemName,
                             @RequestParam int price,

@@ -11,23 +11,25 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+
+
 @Controller
 @RequestMapping("/basic/items")
-@RequiredArgsConstructor
+@RequiredArgsConstructor    //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
     private final ItemRepository itemRepository;
 
     @GetMapping
     public String items(Model model) {
-        List<Item> items = itemRepository.findAll();
-        model.addAttribute("items", items);
-        return "basic/items";
+        List<Item> items = itemRepository.findAll();    //모든 item 조회
+        model.addAttribute("items", items);  //items(모든 item)을 모델에 담는다
+        return "basic/items";   //뷰 템플릿 호출
     }
 
     @GetMapping("/{itemId}")
-    public String item(@PathVariable Long itemId, Model model) {
-        Item item = itemRepository.findById(itemId);
+    public String item(@PathVariable long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);    //PathVariable 로 넘어온 itemId로 item 조회
         model.addAttribute("item", item);
         return "basic/item";
     }
@@ -129,9 +131,10 @@ public class BasicItemController {
 
 
 
-        /**
-         * 테스트용 데이터 추가
-         */
+
+     /*
+     테스트용 데이터(item목록) 추가
+     */
     @PostConstruct
     public void init() {
         itemRepository.save(new Item("testA", 10000, 10));

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-
+/* 컨트롤러 - 폼 뷰를 호출 */
 
 @Controller
 @RequestMapping("/basic/items")
@@ -63,7 +63,6 @@ public class BasicItemController {
 
         return "basic/item";
     }
-
     /**
      * @ModelAttribute("item") Item item
      * model.addAttribute("item", item); 자동 추가
@@ -72,10 +71,8 @@ public class BasicItemController {
     public String addItemV2(@ModelAttribute("item") Item item, Model model) {
         itemRepository.save(item);
         //model.addAttribute("item", item); //자동 추가, 생략 가능
-
         return "basic/item";
     }
-
     /**
      * @ModelAttribute name 생략 가능
      * model.addAttribute(item); 자동 추가, 생략 가능
@@ -86,7 +83,6 @@ public class BasicItemController {
         itemRepository.save(item);
         return "basic/item";
     }
-
     /**
      * @ModelAttribute 자체 생략 가능
      * model.addAttribute(item) 자동 추가
@@ -96,8 +92,6 @@ public class BasicItemController {
         itemRepository.save(item);
         return "basic/item";
     }
-
-
     /**
      * PRG - Post/Redirect/Get
      */
@@ -106,8 +100,6 @@ public class BasicItemController {
         itemRepository.save(item);
         return "redirect:/basic/items/" + item.getId();
     }
-
-
     /**
      * RedirectAttributes
      */
@@ -120,18 +112,19 @@ public class BasicItemController {
     }
 
 
-
+    /* 상품 수정 */
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/editForm";
     }
-
+    /* 상품 수정 저장 */
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
         itemRepository.update(itemId, item);
         return "redirect:/basic/items/{itemId}";
+        //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 리다이렉트를 호출
     }
 
 

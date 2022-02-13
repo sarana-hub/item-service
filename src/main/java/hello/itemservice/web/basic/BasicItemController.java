@@ -20,7 +20,7 @@ public class BasicItemController {
 
     private final ItemRepository itemRepository;
 
-    /* 상품 목록 - 타임리프 */
+    /** 상품 목록 - 타임리프 */
     @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();    //모든 item 조회
@@ -28,7 +28,7 @@ public class BasicItemController {
         return "basic/items";   //뷰 템플릿 호출
     }
 
-    /* 상품 상세 */
+    /** 상품 상세 */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable 로 넘어온 itemId로 item 조회
@@ -36,7 +36,7 @@ public class BasicItemController {
         return "basic/item";
     }
 
-    /* 상품 등록 폼 */
+    /** 상품 등록 폼 */
     @GetMapping("/add")
     public String addForm() {   //단순히 뷰 템플릿만 호출
 
@@ -44,39 +44,51 @@ public class BasicItemController {
     }
 
 
-    /* 상품 등록 처리 - @RequestParam
+
+    /** 상품 등록 처리 - @RequestParam
     * 요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용
     */
-    //@PostMapping("/add")
+    //@PostMapping("/add")      //이전 코드의 매핑(중복매핑) 주석처리
     public String addItemV1(@RequestParam String itemName,
                             @RequestParam int price,
                             @RequestParam Integer quantity,
                             Model model) {
-        Item item = new Item();
+        Item item = new Item();     //Item 객체를 생성
         item.setItemName(itemName);
         item.setPrice(price);
         item.setQuantity(quantity);
 
         itemRepository.save(item);
-
+        //저장된 item 을 모델에 담아서 뷰에 전달
         model.addAttribute("item", item);
+        //모델에 "item" 이름으로 저장된다
 
         return "basic/item";
     }
-    /**
-     * @ModelAttribute("item") Item item
-     * model.addAttribute("item", item); 자동 추가
+
+
+    /** 상품 등록 처리 - @ModelAttribute
+     * @RequestParam 으로 변수를 하나하나 받아서 Item 생성하지않고
+     * @ModelAttribute 를 사용해서 !!한번에!! 처리
+    */
+    /*
+     * @ModelAttribute("item") Item item    //이름을 "item" 로 지정 (모델에 "item" 이름으로 저장)
+     * 모델(Model)에 @ModelAttribute 로 지정한 객체를 자동으로 넣어준다.
+     * (즉 model.addAttribute("item", item); 가 주석처리되어 있어도 잘 동작한다.)
+     *
+     * @ModelAttribute 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로 입력
      */
     //@PostMapping("/add")
     public String addItemV2(@ModelAttribute("item") Item item, Model model) {
         itemRepository.save(item);
-        //model.addAttribute("item", item); //자동 추가, 생략 가능
+        //model.addAttribute("item", item); 자동 추가(생략 가능)
         return "basic/item";
     }
     /**
-     * @ModelAttribute name 생략 가능
-     * model.addAttribute(item); 자동 추가, 생략 가능
-     * 생략시 model에 저장되는 name은 클래스명 첫글자만 소문자로 등록 Item -> item
+     * @ModelAttribute 이름 생략 가능
+     *
+     * 생략시 model에 저장(자동 추가)되는 name은 클래스명 첫글자만 소문자로 등록
+     * (즉 model.addAttribute(item);가 자동 추가) (Item -> item)
      */
     //@PostMapping("/add")
     public String addItemV3(@ModelAttribute Item item) {
@@ -84,14 +96,16 @@ public class BasicItemController {
         return "basic/item";
     }
     /**
-     * @ModelAttribute 자체 생략 가능
-     * model.addAttribute(item) 자동 추가
+     * @ModelAttribute 전체 생략 가능
+     * 대상 객체는 모델에 자동 등록 (즉 model.addAttribute(item) 자동 추가)
      */
     //@PostMapping("/add")
     public String addItemV4(Item item) {
         itemRepository.save(item);
         return "basic/item";
     }
+
+
     /**
      * PRG - Post/Redirect/Get
      */
@@ -112,22 +126,21 @@ public class BasicItemController {
     }
 
 
-    /* 상품 수정 */
+
+    /** 상품 수정 */
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "basic/editForm";
     }
-    /* 상품 수정 저장 */
+    /** 상품 수정 저장 */
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
         itemRepository.update(itemId, item);
         return "redirect:/basic/items/{itemId}";
         //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 리다이렉트를 호출
     }
-
-
 
 
      /*

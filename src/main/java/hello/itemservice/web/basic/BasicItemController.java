@@ -13,9 +13,10 @@ import java.util.List;
 
 /* 컨트롤러 - 폼 뷰를 호출 */
 
+
 @Controller
 @RequestMapping("/basic/items")
-@RequiredArgsConstructor    //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
+@RequiredArgsConstructor           //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
     private final ItemRepository itemRepository;
@@ -108,7 +109,7 @@ public class BasicItemController {
     /**
      * PRG - Post/Redirect/Get
      * 새로 고침 문제를 해결하려면, 상품 저장 후에 뷰 템플릿으로 이동하는 것이 아니라,
-     * 상품 상세 화면으로 리다이렉트를 호출해주면 된다.
+     * 상품 상세 화면으로 리다이렉트를 호출해주면 된다
      */
     //@PostMapping("/add")
     public String addItemV5(Item item) {
@@ -118,7 +119,7 @@ public class BasicItemController {
     /**
      * RedirectAttributes
      * +item.getId() 처럼 URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
-     * 그러므로 RedirectAttributes 를 사용하자.
+     * 그러므로 RedirectAttributes 를 사용!
      */
     @PostMapping("/add")
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {

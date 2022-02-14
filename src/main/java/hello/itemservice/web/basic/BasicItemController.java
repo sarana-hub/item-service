@@ -71,9 +71,9 @@ public class BasicItemController {
      * @RequestParam 으로 변수를 하나하나 받아서 Item 생성하지않고
      * @ModelAttribute 를 사용해서 !!한번에!! 처리
     */
-    /*
+    /**
      * @ModelAttribute("item") Item item    //이름을 "item" 로 지정 (모델에 "item" 이름으로 저장)
-     * 모델(Model)에 @ModelAttribute 로 지정한 객체를 자동으로 넣어준다.
+     * @ModelAttribute 로 지정한 객체를 모델(Model)에 자동으로 넣어준다.
      * (즉 model.addAttribute("item", item); 가 주석처리되어 있어도 잘 동작한다.)
      *
      * @ModelAttribute 는 Item 객체를 생성하고, 요청 파라미터의 값을 프로퍼티 접근법(setXxx)으로 입력
@@ -84,9 +84,8 @@ public class BasicItemController {
         //model.addAttribute("item", item); 자동 추가(생략 가능)
         return "basic/item";
     }
-    /**
+    /*
      * @ModelAttribute 이름 생략 가능
-     *
      * 생략시 model에 저장(자동 추가)되는 name은 클래스명 첫글자만 소문자로 등록
      * (즉 model.addAttribute(item);가 자동 추가) (Item -> item)
      */
@@ -95,19 +94,21 @@ public class BasicItemController {
         itemRepository.save(item);
         return "basic/item";
     }
-    /**
+    /*
      * @ModelAttribute 전체 생략 가능
-     * 대상 객체는 모델에 자동 등록 (즉 model.addAttribute(item) 자동 추가)
      */
     //@PostMapping("/add")
     public String addItemV4(Item item) {
         itemRepository.save(item);
         return "basic/item";
     }
+    //새로 고침하면, ID만 다른 상품 데이터가 계속 쌓이게 된다.
 
 
     /**
      * PRG - Post/Redirect/Get
+     * 새로 고침 문제를 해결하려면, 상품 저장 후에 뷰 템플릿으로 이동하는 것이 아니라,
+     * 상품 상세 화면으로 리다이렉트를 호출해주면 된다.
      */
     //@PostMapping("/add")
     public String addItemV5(Item item) {
@@ -116,6 +117,8 @@ public class BasicItemController {
     }
     /**
      * RedirectAttributes
+     * +item.getId() 처럼 URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
+     * 그러므로 RedirectAttributes 를 사용하자.
      */
     @PostMapping("/add")
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
@@ -127,14 +130,14 @@ public class BasicItemController {
 
 
 
-    /** 상품 수정 */
+    /** 상품 수정 폼 */
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "basic/editForm";
+        return "basic/editForm";    //수정용 폼 뷰를 호출
     }
-    /** 상품 수정 저장 */
+    /** 상품 수정 처리 */
     @PostMapping("/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
         itemRepository.update(itemId, item);

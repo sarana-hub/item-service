@@ -10,10 +10,10 @@ import lombok.Setter;
 public class Item {
     private Long id;
     private String itemName;
-    private Integer price;      //null일 경우 포함하기 위해 Integer
+    //null일 경우 포함하기 위해 Integer
+    private Integer price;
     private Integer quantity;
 
-    //기본 생성자
     public Item() {
     }
 

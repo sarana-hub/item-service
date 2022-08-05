@@ -32,7 +32,7 @@ public class BasicItemController {
     /** 상품 상세 */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
-        Item item = itemRepository.findById(itemId);    //PathVariable 로 넘어온 itemId로 item 조회
+        Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 itemId로 item 조회
         model.addAttribute("item", item);
         return "basic/item";
     }
@@ -150,7 +150,7 @@ public class BasicItemController {
      /*
      테스트용 데이터(item목록) 추가
      */
-    @PostConstruct
+    @PostConstruct  //해당 빈의 의존관계가 모두 주입되고 나면 초기화 용도로 호출
     public void init() {
         itemRepository.save(new Item("testA", 10000, 10));
         itemRepository.save(new Item("testB", 20000, 20));

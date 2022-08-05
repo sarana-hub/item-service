@@ -1,4 +1,4 @@
-# item-service
+# 상품관리서비스
 #
 ## 1. 요구사항 분석
 ### 상품 도메인 모델: 상품 ID, 상품명, 가격, 수량
@@ -14,4 +14,7 @@
 ![image](https://user-images.githubusercontent.com/81903928/151688493-651f28b4-e8cc-4795-845c-c442eaa4cdcf.png)
 
 ![image](https://user-images.githubusercontent.com/81903928/151688508-5aefc443-6348-4bf2-b82c-3e5ab2ac35f9.png)
+
+
+![image](https://user-images.githubusercontent.com/81903928/182774478-0e1c8d9f-de89-4ce4-8478-9f7439fe6382.png)
 

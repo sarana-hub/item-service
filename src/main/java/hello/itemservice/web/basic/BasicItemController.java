@@ -100,8 +100,7 @@ public class BasicItemController {
         itemRepository.save(item);
         return "basic/item";
     }
-    //새로 고침하면, ID만 다른 상품 데이터가 계속 쌓이게 된다
-
+    //새로 고침하면, ID만 다른 상품 데이터가 계속 쌓이게 된다 (중복등록)
 
     /**
      * PRG - Post/Redirect/Get
@@ -111,12 +110,13 @@ public class BasicItemController {
     //@PostMapping("/add")
     public String addItemV5(Item item) {
         itemRepository.save(item);
-        return "redirect:/basic/items/" + item.getId();
-    }
+        return "redirect:/basic/items/" + item.getId(); //상품상세화면으로 다시 이동
+        /* URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
+            * 그러므로 RedirectAttributes 를 사용!*/
+   }
     /**
-     * RedirectAttributes
-     * +item.getId() 처럼 URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
-     * 그러므로 RedirectAttributes 를 사용!
+     * RedirectAttributes:  URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리
+     * 리다이렉트 할 때 status=true를 추가-> 뷰 템플릿에서 이 값이 있으면, "저장되었습니다."라는 메시지 출력
      */
     @PostMapping("/add")
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
@@ -124,6 +124,7 @@ public class BasicItemController {
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/basic/items/{itemId}";
+        //http://localhost:8080/basic/items/3?status=true
     }
 
 

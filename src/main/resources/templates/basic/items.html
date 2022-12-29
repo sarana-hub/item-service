@@ -20,11 +20,14 @@
                     type="button">상품 등록</button>
         </div>
     </div>
+
     <hr class="my-4">
+
     <div>
         <table class="table">
             <thead>
             <tr>
+                <th>이미지</th>
                 <th>ID</th>
                 <th>상품명</th>
                 <th>가격</th>
@@ -33,16 +36,19 @@
             </thead>
             <tbody>
             <tr th:each="item : ${items}">
-                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}"
-                       th:text="${item.id}">회원id</a></td>
-                <td><a href="item.html" th:href="@{|/basic/items/${item.id}|}"
-                       th:text="${item.itemName}">상품명</a></td>
+                <td>
+                    <img th:each="imageFile : ${item.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|"
+                         width="100" height="100"/>
+                </td>
+                <td><a href="item.html" th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">회원id</a></td>
+                <td><a href="item.html" th:href="@{|/basic/items/${item.id}|}" th:text="${item.itemName}">상품명</a></td>
                 <td th:text="${item.price}">10000</td>
                 <td th:text="${item.quantity}">10</td>
             </tr>
             </tbody>
         </table>
     </div>
+
 </div> <!-- /container -->
 </body>
 </html>

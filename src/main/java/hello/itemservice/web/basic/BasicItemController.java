@@ -1,25 +1,34 @@
 package hello.itemservice.web.basic;
 
+import hello.itemservice.domain.UploadFile;
 import hello.itemservice.domain.item.Item;
 import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.file.FileStore;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 
 /* 컨트롤러 - 폼 뷰를 호출 */
 
 
+@Slf4j
 @Controller
 @RequestMapping("/basic/items")
 @RequiredArgsConstructor           //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
     private final ItemRepository itemRepository;
+    private final FileStore fileStore;
 
     /** 상품 목록 */
     @GetMapping
@@ -29,7 +38,7 @@ public class BasicItemController {
         return "basic/items";   //뷰 템플릿 호출
     }
 
-    /** 상품 상세 */
+    /** 상품 상세(조회) */
     @GetMapping("/{itemId}")
     public String item(@PathVariable long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 itemId로 item 조회
@@ -42,6 +51,53 @@ public class BasicItemController {
     public String addForm() {   //단순히 뷰 템플릿만 호출
 
         return "basic/addForm";
+    }
+
+    @PostMapping("/add")
+    public String saveItem(@ModelAttribute ItemForm form, RedirectAttributes redirectAttributes) throws IOException {
+        List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
+
+        //데이터베이스에 저장
+        Item item = new Item();
+        item.setItemName(form.getItemName());
+        item.setPrice(form.getPrice());
+        item.setQuantity(form.getQuantity());
+        item.setImageFiles(storeImageFiles); //
+        itemRepository.save(item);
+
+        redirectAttributes.addAttribute("itemId", item.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/basic/items/{itemId}";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
+    }
+
+
+    /** 상품 수정 */
+    @GetMapping("/{itemId}/edit")
+    public String editForm(@PathVariable Long itemId, Model model) {
+        Item item = itemRepository.findById(itemId);
+        model.addAttribute("item", item);
+        return "basic/editForm";    //수정용 폼 뷰를 호출
+    }
+    /** 상품 수정 처리 */
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form) throws IOException {
+        List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
+
+        Item item = itemRepository.findById(itemId);
+        item.setItemName(form.getItemName());
+        item.setQuantity(form.getQuantity());
+        item.setPrice(form.getPrice());
+        item.setImageFiles(storeImageFiles);
+
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";
+        //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 "리다이렉트"를 호출
     }
 
 
@@ -118,7 +174,7 @@ public class BasicItemController {
      * RedirectAttributes:  URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리
      * 리다이렉트 할 때 status=true를 추가-> 뷰 템플릿에서 이 값이 있으면, "저장되었습니다."라는 메시지 출력
      */
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV6(Item item, RedirectAttributes redirectAttributes) {
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
@@ -128,29 +184,12 @@ public class BasicItemController {
     }
 
 
-
-    /** 상품 수정 */
-    @GetMapping("/{itemId}/edit")
-    public String editForm(@PathVariable Long itemId, Model model) {
-        Item item = itemRepository.findById(itemId);
-        model.addAttribute("item", item);
-        return "basic/editForm";    //수정용 폼 뷰를 호출
-    }
-    /** 상품 수정 처리 */
-    @PostMapping("/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
-        itemRepository.update(itemId, item);
-        return "redirect:/basic/items/{itemId}";
-        //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 "리다이렉트"를 호출
-    }
-
-
      /*
      테스트용 데이터(item목록) 추가
      */
-    @PostConstruct  //해당 빈의 의존관계가 모두 주입되고 나면 초기화 용도로 호출
+    /*@PostConstruct  //해당 빈의 의존관계가 모두 주입되고 나면 초기화 용도로 호출
     public void init() {
         itemRepository.save(new Item("testA", 10000, 10));
         itemRepository.save(new Item("testB", 20000, 20));
-    }
+    }*/
 }

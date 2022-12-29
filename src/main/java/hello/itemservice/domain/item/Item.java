@@ -1,12 +1,18 @@
 package hello.itemservice.domain.item;
 
+import hello.itemservice.domain.UploadFile;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 /*상품 객체*/
 
 @Getter @Setter
+//@Data
 public class Item {
     private Long id;
     private String itemName;
@@ -14,13 +20,16 @@ public class Item {
     private Integer price;
     private Integer quantity;
 
+    private List<UploadFile> imageFiles;
+
     public Item() {
     }
 
-    //id 제외한 생성자
-    public Item(String itemName, Integer price, Integer quantity) {
+    public Item(String itemName, Integer price, Integer quantity, List<UploadFile> imageFiles) {
         this.itemName = itemName;
         this.price = price;
         this.quantity = quantity;
+        this.imageFiles = imageFiles;
     }
+
 }

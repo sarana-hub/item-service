@@ -1,4 +1,4 @@
-package hello.itemservice.web.basic;
+package hello.itemservice.web;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;

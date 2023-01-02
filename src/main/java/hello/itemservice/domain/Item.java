@@ -1,10 +1,8 @@
-package hello.itemservice.domain.item;
+package hello.itemservice.domain;
 
-import hello.itemservice.domain.UploadFile;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,7 +10,7 @@ import java.util.List;
 /*상품 객체*/
 
 @Getter @Setter
-//@Data
+@Data
 public class Item {
     private Long id;
     private String itemName;

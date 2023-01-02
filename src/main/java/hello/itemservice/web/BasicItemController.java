@@ -1,12 +1,13 @@
-package hello.itemservice.web.basic;
+package hello.itemservice.web;
 
 import hello.itemservice.domain.UploadFile;
-import hello.itemservice.domain.item.Item;
-import hello.itemservice.domain.item.ItemRepository;
+import hello.itemservice.domain.Item;
+import hello.itemservice.domain.ItemRepository;
 import hello.itemservice.file.FileStore;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/basic/items")
+@RequestMapping("/items")
 @RequiredArgsConstructor           //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
@@ -35,22 +36,22 @@ public class BasicItemController {
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();    //모든 item 조회
         model.addAttribute("items", items);  //items(모든 item)을 모델에 담는다
-        return "basic/items";   //뷰 템플릿 호출
+        return "items";   //뷰 템플릿 호출
     }
 
     /** 상품 상세(조회) */
     @GetMapping("/{itemId}")
-    public String item(@PathVariable long itemId, Model model) {
+    public String item(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 itemId로 item 조회
         model.addAttribute("item", item);
-        return "basic/item";
+        return "item";
     }
 
     /** 상품 등록 폼 */
     @GetMapping("/add")
     public String addForm() {   //단순히 뷰 템플릿만 호출
 
-        return "basic/addForm";
+        return "addForm";
     }
 
     @PostMapping("/add")
@@ -67,7 +68,7 @@ public class BasicItemController {
 
         redirectAttributes.addAttribute("itemId", item.getId());
         redirectAttributes.addAttribute("status", true);
-        return "redirect:/basic/items/{itemId}";
+        return "redirect:/items/{itemId}";
     }
 
     @ResponseBody
@@ -82,7 +83,7 @@ public class BasicItemController {
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
-        return "basic/editForm";    //수정용 폼 뷰를 호출
+        return "editForm";    //수정용 폼 뷰를 호출
     }
     /** 상품 수정 처리 */
     @PostMapping("/{itemId}/edit")
@@ -96,7 +97,7 @@ public class BasicItemController {
         item.setImageFiles(storeImageFiles);
 
         itemRepository.update(itemId, item);
-        return "redirect:/basic/items/{itemId}";
+        return "redirect:/items/{itemId}";
         //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 "리다이렉트"를 호출
     }
 

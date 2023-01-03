@@ -50,7 +50,6 @@ public class BasicItemController {
     /** 상품 등록 폼 */
     @GetMapping("/items/add")
     public String addForm() {   //단순히 뷰 템플릿만 호출
-
         return "addForm";
     }
 
@@ -87,16 +86,16 @@ public class BasicItemController {
     }
     /** 상품 수정 처리 */
     @PostMapping("/items/{itemId}/edit")
-    public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form) throws IOException {
+    public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form,
+                       RedirectAttributes redirectAttributes) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
 
         Item item = itemRepository.findById(itemId);
-        item.setItemName(form.getItemName());
-        item.setQuantity(form.getQuantity());
-        item.setPrice(form.getPrice());
-        item.setImageFiles(storeImageFiles);
 
         itemRepository.update(itemId, item);
+
+        redirectAttributes.addAttribute("itemId", item.getId());
+        redirectAttributes.addAttribute("status", true);
         return "redirect:/items/{itemId}";
         //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 "리다이렉트"를 호출
     }

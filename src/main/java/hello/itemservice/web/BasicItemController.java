@@ -24,7 +24,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/items")
+//@RequestMapping("/items")
 @RequiredArgsConstructor           //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
@@ -32,7 +32,7 @@ public class BasicItemController {
     private final FileStore fileStore;
 
     /** 상품 목록 */
-    @GetMapping
+    @GetMapping("/items")
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();    //모든 item 조회
         model.addAttribute("items", items);  //items(모든 item)을 모델에 담는다
@@ -40,7 +40,7 @@ public class BasicItemController {
     }
 
     /** 상품 상세(조회) */
-    @GetMapping("/{itemId}")
+    @GetMapping("/items/{itemId}")
     public String item(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 itemId로 item 조회
         model.addAttribute("item", item);
@@ -48,13 +48,13 @@ public class BasicItemController {
     }
 
     /** 상품 등록 폼 */
-    @GetMapping("/add")
+    @GetMapping("/items/add")
     public String addForm() {   //단순히 뷰 템플릿만 호출
 
         return "addForm";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/items/add")
     public String saveItem(@ModelAttribute ItemForm form, RedirectAttributes redirectAttributes) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
 
@@ -79,14 +79,14 @@ public class BasicItemController {
 
 
     /** 상품 수정 */
-    @GetMapping("/{itemId}/edit")
+    @GetMapping("/items/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "editForm";    //수정용 폼 뷰를 호출
     }
     /** 상품 수정 처리 */
-    @PostMapping("/{itemId}/edit")
+    @PostMapping("/items/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
 

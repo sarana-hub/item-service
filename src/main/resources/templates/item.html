@@ -23,7 +23,7 @@
         <h2 th:if="${param.status}" th:text="'저장 완료!'"></h2>
 
         <div>
-            <img th:each="imageFile : ${item.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|"/>
+            <img th:each="imageFile : ${item.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>
         </div>
 
         <div>

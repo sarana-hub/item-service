@@ -62,7 +62,7 @@ public class BasicItemController {
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
-        item.setImageFiles(storeImageFiles); //
+        item.setImageFiles(storeImageFiles);
         itemRepository.save(item);
 
         redirectAttributes.addAttribute("itemId", item.getId());
@@ -91,6 +91,10 @@ public class BasicItemController {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
 
         Item item = itemRepository.findById(itemId);
+        item.setItemName(form.getItemName());
+        item.setPrice(form.getPrice());
+        item.setQuantity(form.getQuantity());
+        //item.setImageFiles(storeImageFiles);
 
         itemRepository.update(itemId, item);
 

@@ -94,7 +94,10 @@ public class BasicItemController {
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
-        //item.setImageFiles(storeImageFiles);
+
+        if(!storeImageFiles.isEmpty()) {
+            item.setImageFiles(storeImageFiles);
+        }
 
         itemRepository.update(itemId, item);
 

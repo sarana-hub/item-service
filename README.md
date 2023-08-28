@@ -4,6 +4,7 @@
 ### 상품 도메인 모델: 상품 ID, 상품명, 가격, 수량
 ### 상품 관리 기능: 상품 목록, 상품 상세, 상품 등록, 상품 수정
 
+#
 ### 서비스 화면:
 ![image](https://user-images.githubusercontent.com/81903928/151688483-ce9d566b-fb82-476a-8244-24cc508acf24.png)
 
@@ -15,8 +16,8 @@
 
 ![image](https://user-images.githubusercontent.com/81903928/151688508-5aefc443-6348-4bf2-b82c-3e5ab2ac35f9.png)
 
-
-### 서비스 제공 흐름
+#
+### 서비스 제공 흐름:
 ![image](https://github.com/sarana-hub/item-service/assets/81903928/c02e4a6c-9de6-4c1c-b727-52fe1af09404)
 
 

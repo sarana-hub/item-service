@@ -62,7 +62,7 @@ public class BasicItemController {
         item.setItemName(form.getItemName());
         item.setPrice(form.getPrice());
         item.setQuantity(form.getQuantity());
-        item.setImageFiles(storeImageFiles);
+        //item.setImageFiles(storeImageFiles);
         itemRepository.save(item);
 
         redirectAttributes.addAttribute("itemId", item.getId());
@@ -84,7 +84,7 @@ public class BasicItemController {
         model.addAttribute("item", item);
         return "editForm";    //수정용 폼 뷰를 호출
     }
-    /** 상품 수정 처리 */
+    /** 상품 수정 처리
     @PostMapping("/items/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form,
                        RedirectAttributes redirectAttributes) throws IOException {
@@ -105,7 +105,7 @@ public class BasicItemController {
         redirectAttributes.addAttribute("status", true);
         return "redirect:/items/{itemId}";
         //(뷰 템플릿을 호출하는 대신에) 상품 상세 화면으로 이동하도록 "리다이렉트"를 호출
-    }
+    }*/
 
 
     /** 상품 등록 처리 - @RequestParam

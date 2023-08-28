@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-/*상품 저장소*/
-
 @Repository
 public class ItemRepository {
     private static final Map<Long, Item> store=new HashMap<>();
@@ -21,25 +18,26 @@ public class ItemRepository {
         return item;
     }
 
-    public Item findById(Long id){      //조회 
-
+    public Item findById(Long id){      //조회
         return store.get(id);
     }
 
     public List<Item> findAll(){        //전체 조회
-
         return new ArrayList<>(store.values());
     }
 
-    public void update(Long itemId, Item updateParam){      //파라미터 정보 업데이트
+    public void update(Long itemId, Item updateParam){
         Item findItem=findById(itemId);
-        findItem.setItemName(updateParam.getItemName());    
+
+        //파라미터 정보 업데이트
+        findItem.setItemName(updateParam.getItemName());
         findItem.setPrice(updateParam.getPrice());
         findItem.setQuantity(updateParam.getQuantity());
-        findItem.setImageFiles(updateParam.getImageFiles());
+        //findItem.setImageFiles(updateParam.getImageFiles());
     }
 
     public void clearStore(){
         store.clear();
     }
+
 }

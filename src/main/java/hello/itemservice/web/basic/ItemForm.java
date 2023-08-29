@@ -1,4 +1,4 @@
-package hello.itemservice.web;
+package hello.itemservice.web.basic;
 
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,5 +14,5 @@ public class ItemForm {
     private Integer price;
     private Integer quantity;
 
-    private List<MultipartFile> imageFiles;
+    //private List<MultipartFile> imageFiles;
 }

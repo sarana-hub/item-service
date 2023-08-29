@@ -1,4 +1,4 @@
-package hello.itemservice.web;
+package hello.itemservice.web.basic;
 
 import hello.itemservice.domain.UploadFile;
 import hello.itemservice.domain.Item;
@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -22,32 +23,41 @@ import java.util.List;
 /* 컨트롤러 - 폼 뷰를 호출 */
 
 
-@Slf4j
 @Controller
-//@RequestMapping("/items")
+@RequestMapping("/basic/items")
 @RequiredArgsConstructor           //final이 붙은 멤버변수만 사용해서 생성자를 자동 생성
 public class BasicItemController {
 
     private final ItemRepository itemRepository;
-    private final FileStore fileStore;
+    //private final FileStore fileStore;
 
     /** 상품 목록 */
-    @GetMapping("/items")
+    @GetMapping
     public String items(Model model) {
         List<Item> items = itemRepository.findAll();    //모든 item 조회
         model.addAttribute("items", items);  //items(모든 item)을 모델에 담는다
-        return "items";   //뷰 템플릿 호출
+        return "basic/items";   //뷰 템플릿 호출
     }
 
-    /** 상품 상세(조회) */
+    /*
+     테스트용 데이터 추가
+     */
+    @PostConstruct  //해당 빈의 의존관계가 모두 주입되고 나면 초기화 용도로 호출
+    public void init() {
+        itemRepository.save(new Item("testA", 10000, 10));
+        itemRepository.save(new Item("testB", 20000, 20));
+    }
+
+
+    /** 상품 상세(조회)
     @GetMapping("/items/{itemId}")
     public String item(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 itemId로 item 조회
         model.addAttribute("item", item);
         return "item";
-    }
+    }*/
 
-    /** 상품 등록 폼 */
+    /** 상품 등록 폼
     @GetMapping("/items/add")
     public String addForm() {   //단순히 뷰 템플릿만 호출
         return "addForm";
@@ -55,7 +65,7 @@ public class BasicItemController {
 
     @PostMapping("/items/add")
     public String saveItem(@ModelAttribute ItemForm form, RedirectAttributes redirectAttributes) throws IOException {
-        List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
+        //List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());
 
         //데이터베이스에 저장
         Item item = new Item();
@@ -68,22 +78,22 @@ public class BasicItemController {
         redirectAttributes.addAttribute("itemId", item.getId());
         redirectAttributes.addAttribute("status", true);
         return "redirect:/items/{itemId}";
-    }
+    }*/
 
-    @ResponseBody
+    /*@ResponseBody
     @GetMapping("/images/{filename}")
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
         return new UrlResource("file:" + fileStore.getFullPath(filename));
-    }
+    }*/
 
 
-    /** 상품 수정 */
+    /** 상품 수정
     @GetMapping("/items/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
         Item item = itemRepository.findById(itemId);
         model.addAttribute("item", item);
         return "editForm";    //수정용 폼 뷰를 호출
-    }
+    }*/
     /** 상품 수정 처리
     @PostMapping("/items/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form,
@@ -110,7 +120,7 @@ public class BasicItemController {
 
     /** 상품 등록 처리 - @RequestParam
     * 요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용
-    */
+
     //@PostMapping("/add")      //중복매핑 주석처리
     public String addItemV1(@RequestParam String itemName,
                             @RequestParam int price,
@@ -127,7 +137,7 @@ public class BasicItemController {
         //모델에 "item" 이름으로 저장된다
 
         return "basic/item";
-    }
+    }*/
 
 
     /** 상품 등록 처리 - @ModelAttribute
@@ -139,12 +149,12 @@ public class BasicItemController {
      * @ModelAttribute("item") Item item
      * 이름을 "item" 로 지정 (모델에 "item" 이름으로 저장)
      * ->model.addAttribute("item", item); 자동 추가
-     */
+
     //@PostMapping("/add")
     public String addItemV2(@ModelAttribute("item") Item item, Model model) {
         itemRepository.save(item);
         return "basic/item";
-    }
+    }*/
     /*
      * @ModelAttribute 이름 생략 가능
      * 생략시 model에 저장(자동 추가)되는 name은 클래스명 첫글자만 소문자로 등록
@@ -190,13 +200,4 @@ public class BasicItemController {
         //http://localhost:8080/basic/items/3?status=true
     }
 
-
-     /*
-     테스트용 데이터(item목록) 추가
-     */
-    /*@PostConstruct  //해당 빈의 의존관계가 모두 주입되고 나면 초기화 용도로 호출
-    public void init() {
-        itemRepository.save(new Item("testA", 10000, 10));
-        itemRepository.save(new Item("testB", 20000, 20));
-    }*/
 }

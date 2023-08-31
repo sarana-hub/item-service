@@ -119,8 +119,7 @@ public class BasicItemController {
 
 
     /** 상품 등록 처리 - @RequestParam
-    * 요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용
-
+    * 요청 파라미터 형식을 처리해야 하므로 @RequestParam 을 사용*/
     //@PostMapping("/add")      //중복매핑 주석처리
     public String addItemV1(@RequestParam String itemName,
                             @RequestParam int price,
@@ -137,7 +136,7 @@ public class BasicItemController {
         //모델에 "item" 이름으로 저장된다
 
         return "basic/item";
-    }*/
+    }
 
 
     /** 상품 등록 처리 - @ModelAttribute
@@ -148,29 +147,30 @@ public class BasicItemController {
     /**
      * @ModelAttribute("item") Item item
      * 이름을 "item" 로 지정 (모델에 "item" 이름으로 저장)
-     * ->model.addAttribute("item", item); 자동 추가
+     * ->model.addAttribute("item", item); 자동 추가*/
 
     //@PostMapping("/add")
-    public String addItemV2(@ModelAttribute("item") Item item, Model model) {
+    public String addItemV2(@ModelAttribute("item") Item item) {
         itemRepository.save(item);
-        return "basic/item";
-    }*/
-    /*
-     * @ModelAttribute 이름 생략 가능
-     * 생략시 model에 저장(자동 추가)되는 name은 클래스명 첫글자만 소문자로 등록
-     * (즉 model.addAttribute(item);가 자동 추가) (Item -> item)
-     */
-    //@PostMapping("/add")
-    public String addItemV3(@ModelAttribute Item item) {
-        itemRepository.save(item);
+        //model.addAttribute("item", item); //자동 추가
         return "basic/item";
     }
     /*
-     * @ModelAttribute 자체 생략 가능
+     * @ModelAttribute 이름 생략 가능
+     * 생략시 model에 저장(자동 추가)되는 name은 클래스명 첫글자만 소문자로 등록 (Item -> item)
      */
+    /**@ModelAttribute 이름 생략 가능*/
     //@PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item) {
+        itemRepository.save(item);
+        //model.addAttribute(item); //자동 추가 //model에 저장되는 name은 클래스명 첫글자만 소문자
+        return "basic/item";
+    }
+    /** @ModelAttribute 자체 생략 가능*/
+    @PostMapping("/add")
     public String addItemV4(Item item) {
         itemRepository.save(item);
+        //model.addAttribute(item) //자동 추가
         return "basic/item";
     }
     //새로 고침하면, ID만 다른 상품 데이터가 계속 쌓이게 된다 (중복등록)

@@ -52,17 +52,17 @@ public class BasicItemController {
     /** 상품 상세(조회) */
     @GetMapping("/{itemId}")
     public String item(@PathVariable Long itemId, Model model) {
-        Item item = itemRepository.findById(itemId);    //PathVariable 로 넘어온 상품ID로 item 조회하고
+        Item item = itemRepository.findById(itemId);    //PathVariable로 넘어온 상품ID로 item 조회하고
         model.addAttribute("item", item);   //모델에 담아둔다
         return "basic/item";      //뷰 템플릿 호출
     }
 
-    /** 상품 등록 폼
-    @GetMapping("/items/add")
-    public String addForm() {   //단순히 뷰 템플릿만 호출
-        return "addForm";
+    /** 상품 등록 폼*/
+    @GetMapping("/add")
+    public String addForm() {
+        return "basic/addForm";     //단순히 뷰 템플릿만 호출
     }
-
+/*
     @PostMapping("/items/add")
     public String saveItem(@ModelAttribute ItemForm form, RedirectAttributes redirectAttributes) throws IOException {
         //List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());

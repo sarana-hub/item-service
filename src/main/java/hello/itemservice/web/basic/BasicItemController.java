@@ -87,15 +87,20 @@ public class BasicItemController {
     }*/
 
 
-    /** 상품 수정
-    @GetMapping("/items/{itemId}/edit")
+    /** 상품 수정 폼 컨트롤러 */
+    @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
-        Item item = itemRepository.findById(itemId);
+        Item item = itemRepository.findById(itemId);    //수정에 필요한 정보 조회
         model.addAttribute("item", item);
-        return "editForm";    //수정용 폼 뷰를 호출
-    }*/
-    /** 상품 수정 처리
-    @PostMapping("/items/{itemId}/edit")
+        return "basic/editForm";    //수정용 폼 뷰를 호출
+    }
+    /** 상품 수정 처리*/
+    @PostMapping("/{itemId}/edit")
+    public String edit(@PathVariable Long itemId, @ModelAttribute Item item) {
+        itemRepository.update(itemId, item);
+        return "redirect:/basic/items/{itemId}";    //리다이렉트 호출 (상품상세화면으로 이동)
+    }
+    /*@PostMapping("/items/{itemId}/edit")
     public String edit(@PathVariable Long itemId, @ModelAttribute ItemForm form,
                        RedirectAttributes redirectAttributes) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(form.getImageFiles());

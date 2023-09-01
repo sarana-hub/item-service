@@ -172,7 +172,7 @@ public class BasicItemController {
         return "basic/item";
     }
     /** @ModelAttribute 자체 생략 가능*/
-    @PostMapping("/add")
+    //@PostMapping("/add")
     public String addItemV4(Item item) {
         itemRepository.save(item);
         //model.addAttribute(item) //자동 추가
@@ -181,17 +181,16 @@ public class BasicItemController {
     //새로 고침하면, ID만 다른 상품 데이터가 계속 쌓이게 된다 (중복등록)
 
     /**
-     * PRG - Post/Redirect/Get
-     * 새로 고침 문제를 해결하려면, 상품 저장 후에 뷰 템플릿으로 이동하는 것이 아니라,
-     * 상품 상세 화면으로 리다이렉트를 호출해주면 된다
+     * 상품 등록 처리 이후에 뷰 템플릿이 아니라 상품 상세 화면으로 리다이렉트 하도록.
+     * 이런 문제 해결 방식을 PRG 라 한다.
      */
-    //@PostMapping("/add")
+    @PostMapping("/add")
     public String addItemV5(Item item) {
         itemRepository.save(item);
         return "redirect:/basic/items/" + item.getId(); //상품상세화면으로 다시 이동
-        /* URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
-            * 그러므로 RedirectAttributes 를 사용!*/
    }
+    /* URL에 변수를 더해서 사용하는 것은 URL 인코딩이 안되기 때문에 위험
+     * 그러므로 RedirectAttributes 를 사용!*/
     /**
      * RedirectAttributes:  URL 인코딩도 해주고, pathVarible , 쿼리 파라미터까지 처리
      * 리다이렉트 할 때 status=true를 추가-> 뷰 템플릿에서 이 값이 있으면, "저장되었습니다."라는 메시지 출력

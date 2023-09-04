@@ -10,12 +10,12 @@
 
 ![image](https://github.com/sarana-hub/item-service/assets/81903928/96825938-b096-45d4-996d-e6fb14c131ff)
 
-
 ![image](https://user-images.githubusercontent.com/81903928/151688550-18c9db9f-0374-4b7c-8f46-58d7de68e31f.png)
 
 ![image](https://user-images.githubusercontent.com/81903928/151688493-651f28b4-e8cc-4795-845c-c442eaa4cdcf.png)
 
-![image](https://user-images.githubusercontent.com/81903928/151688508-5aefc443-6348-4bf2-b82c-3e5ab2ac35f9.png)
+![image](https://github.com/sarana-hub/item-service/assets/81903928/f500823e-5b1a-45a4-83d3-a7d03cf577ef)
+
 
 #
 ### 서비스 제공 흐름:

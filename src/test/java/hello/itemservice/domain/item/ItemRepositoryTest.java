@@ -14,9 +14,9 @@ class ItemRepositoryTest {
     ItemRepository itemRepository = new ItemRepository();
 
 
-    @AfterEach      //각 테스트 끝날때마다 실행됨
+    @AfterEach      //각 테스트가 종료될 때 마다 실행됨
     void afterEach() {
-        itemRepository.clearStore();    //각 테스트 끝날때마다, 데이터 지워주기
+        itemRepository.clearStore();    //저장된 데이터를 삭제
     }
 
 
@@ -46,7 +46,7 @@ class ItemRepositoryTest {
         List<Item> result = itemRepository.findAll();
 
         //then
-        assertThat(result.size()).isEqualTo(2);     //size는 2개이다
+        assertThat(result.size()).isEqualTo(2);     //result는 2개이다
         assertThat(result).contains(item1, item2);  //item1, item2를 포함한다
     }
 
@@ -64,10 +64,10 @@ class ItemRepositoryTest {
 
         Item findItem = itemRepository.findById(itemId);
         //then
-        //업데이트된 값과 조회된 값이 같다
         assertThat(findItem.getItemName()).isEqualTo(updateParam.getItemName());
         assertThat(findItem.getPrice()).isEqualTo(updateParam.getPrice());
         assertThat(findItem.getQuantity()).isEqualTo(updateParam.getQuantity());
+        //업데이트된 값과 조회된 값이 같다
     }
 
 }

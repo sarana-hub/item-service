@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Getter @Setter
-//@Data //핵심 도메인 모델에 사용하기에는 매우 위험
+//@Data //"핵심 도메인 모델"에 사용하기에는 매우 위험
 public class Item {
 
     private Long id;

@@ -11,7 +11,7 @@ import java.util.Map;
 public class ItemRepository {
 
     /* 동시성 문제가 고려되어 있지 않음
-     * (실무에서는 ConcurrentHashMap, AtomicLong 사용 고려)*/
+     * (실무에서는 ConcurrentHashMap 사용)*/
     private static final Map<Long, Item> store=new HashMap<>();
     private static long sequence=0L;
 
@@ -30,7 +30,7 @@ public class ItemRepository {
     }
 
 
-    //실무(큰 프로젝트)에서는, 업데이트할 요소(이름,가격,양)만 들어있는 클래스(객체) 따로 만들기
+    //큰 프로젝트에서는, 업데이트할 요소(이름,가격,양)만 들어있는 클래스(객체) 따로 만들기
     public void update(Long itemId, Item updateParam){
         Item findItem=findById(itemId);
 

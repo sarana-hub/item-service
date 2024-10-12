@@ -7,13 +7,14 @@ import lombok.Setter;
 import java.util.List;
 
 
-@Getter @Setter
 //@Data //"핵심 도메인 모델"에 사용하기에는 매우 위험
+@Getter @Setter
 public class Item {
 
     private Long id;
     private String itemName;
-    //null일 경우 포함하기 위해 Integer
+
+    /*null일 경우 포함하기 위해 Integer*/
     private Integer price;
     private Integer quantity;
     //private List<UploadFile> imageFiles;

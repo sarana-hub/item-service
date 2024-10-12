@@ -10,9 +10,9 @@ import java.util.Map;
 @Repository
 public class ItemRepository {
 
-    /* 동시성 문제가 고려되어 있지 않음
-     * (실무에서는 ConcurrentHashMap 사용)*/
+    /* HashMap은 동시성 문제가 고려되어 있지 않음 (실무에서는 ConcurrentHashMap 사용 고려) */
     private static final Map<Long, Item> store=new HashMap<>();
+    /* 실무에서는 AtomicLong 사용 고려 */
     private static long sequence=0L;
 
     public Item save(Item item){    //저장

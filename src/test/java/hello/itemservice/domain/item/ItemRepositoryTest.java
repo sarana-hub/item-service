@@ -35,7 +35,7 @@ class ItemRepositoryTest {
 
 
     @Test
-    void findAll() {
+    void findAll() {    //findAll(목록 조회)은 2개 이상 넣기
         //given
         Item item1 = new Item("item1", 10000, 10);
         Item item2 = new Item("item2", 20000, 20);
